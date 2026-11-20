@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #F6F7FB;
+    --bg-elevated: #FFFFFF;
+    --surface: #FFFFFF;
+    --surface-2: #F1F3F9;
+    --surface-hover: #E8ECF5;
+    --border: rgba(15, 23, 42, 0.10);
+    --border-strong: rgba(15, 23, 42, 0.18);
+    --text: #0F172A;
+    --text-muted: #52607A;
+    --text-faint: #596782;
+    --primary: #6366F1;
+    --primary-hover: #4F46E5;
+    --primary-soft: rgba(99, 102, 241, 0.12);
+    --on-primary: #FFFFFF;
+    --accent: #0369A1;
+    --violet: #7046C8;
+    --pink: #AD317A;
+    --teal: #087F78;
+    --success: #047857;
+    --warning: #B45309;
+    --danger: #B91C1C;
+    --ring: rgba(99, 102, 241, 0.25);
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+    --warning-soft: rgba(245, 158, 11, 0.10);
+    --danger-soft: rgba(239, 68, 68, 0.10);
+    --success-soft: rgba(16, 185, 129, 0.10);
+    --violet-soft: rgba(112, 70, 200, 0.10);
+    --pink-soft: rgba(173, 49, 122, 0.10);
+    --teal-soft: rgba(8, 127, 120, 0.10);
+    --scrim: rgba(7, 10, 20, 0.65);
+
+  }
+
+  [data-theme="dark"] {
+    --bg: #070A14;
+    --bg-elevated: #0B1020;
+    --surface: #101629;
+    --surface-2: #151C33;
+    --surface-hover: #1B2442;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --text: #F1F4FF;
+    --text-muted: #A8B1CC;
+    --text-faint: #9AA5C4;
+    --primary: #6366F1;
+    --primary-hover: #7C7FF5;
+    --primary-soft: rgba(99, 102, 241, 0.16);
+    --on-primary: #FFFFFF;
+    --accent: #38BDF8;
+    --violet: #B49AFF;
+    --pink: #F29ACB;
+    --teal: #5EE0D2;
+    --success: #34D399;
+    --warning: #FBBF24;
+    --danger: #F87171;
+    --ring: rgba(99, 102, 241, 0.40);
+    --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.50);
+    --warning-soft: rgba(251, 191, 36, 0.10);
+    --danger-soft: rgba(248, 113, 113, 0.12);
+    --success-soft: rgba(52, 211, 153, 0.10);
+    --violet-soft: rgba(180, 154, 255, 0.12);
+    --pink-soft: rgba(242, 154, 203, 0.12);
+    --teal-soft: rgba(94, 224, 210, 0.12);
+    --scrim: rgba(0, 0, 0, 0.72);
+
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    scrollbar-color: var(--border-strong) transparent;
+    color-scheme: light;
+  }
+  [data-theme="dark"] { color-scheme: dark; }
+  ::selection { background: var(--primary-soft); color: var(--text); }
+
+  /* Smooth custom scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-faint);
+  }
+}
+
+/* Glassmorphism utility classes using semantic variables */
+.glass-panel {
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+}
+
+.glass-input {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+[data-theme="dark"] .glass-input {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+/* Accessible focus visible outlines */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Hide scrollbar for tabs / chips */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.theme-transition, .glass-panel, .glass-input { transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease; }
+.chip-scroll { mask-image: linear-gradient(to right, transparent, black 12px, black calc(100% - 12px), transparent); }
+.urdu-script { font-family: 'Noto Nastaliq Urdu', serif; line-height: 2; }
+.animate-message-in { animation: messageIn 150ms ease-out both; }
+@keyframes messageIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes topic-card-enter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.topic-card-enter { opacity: 0; animation: topic-card-enter 200ms ease-out forwards; }
+@media (prefers-reduced-motion: reduce) {
+  @keyframes topic-card-enter { from { opacity: 0; } to { opacity: 1; } }
+  .topic-card-enter { transform: none !important; }
+  .theme-transition, .glass-panel, .glass-input, .animate-blob, .animate-pulse, .animate-bounce, .animate-message-in { transition: none !important; animation: none !important; }
+}

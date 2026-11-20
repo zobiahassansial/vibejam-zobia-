@@ -1,0 +1,7 @@
+[tool.pyright]
+include = ["backend"]
+extraPaths = [
+    "c:/AskSE/backend",
+    "C:/Users/ZENBOOK/AppData/Local/Programs/Python/Python313/Lib/site-packages"
+]
+

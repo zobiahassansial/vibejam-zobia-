@@ -1,0 +1,80 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  darkMode: ['selector', '[data-theme="dark"]'],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      colors: {
+        theme: {
+          bg: 'var(--bg)',
+          elevated: 'var(--bg-elevated)',
+          surface: 'var(--surface)',
+          'surface-2': 'var(--surface-2)',
+          'surface-hover': 'var(--surface-hover)',
+          border: 'var(--border)',
+          'border-strong': 'var(--border-strong)',
+          text: 'var(--text)',
+          muted: 'var(--text-muted)',
+          faint: 'var(--text-faint)',
+          primary: 'var(--primary)',
+          'primary-hover': 'var(--primary-hover)',
+          'primary-soft': 'var(--primary-soft)',
+          'on-primary': 'var(--on-primary)',
+          accent: 'var(--accent)',
+          success: 'var(--success)',
+          warning: 'var(--warning)',
+          danger: 'var(--danger)',
+          ring: 'var(--ring)',
+          scrim: 'var(--scrim)',
+          violet: 'var(--violet)',
+          pink: 'var(--pink)',
+          teal: 'var(--teal)',
+          'warning-soft': 'var(--warning-soft)',
+          'danger-soft': 'var(--danger-soft)',
+          'success-soft': 'var(--success-soft)',
+          'violet-soft': 'var(--violet-soft)',
+          'pink-soft': 'var(--pink-soft)',
+          'teal-soft': 'var(--teal-soft)',
+        },
+      },
+      boxShadow: {
+        glass: 'var(--shadow)',
+        'glass-sm': 'var(--shadow)',
+        'glow-brand': '0 0 25px -5px var(--ring)',
+        'glow-cyan': '0 0 25px -5px var(--ring)',
+      },
+      animation: {
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        blob: 'blob 10s infinite',
+        'fade-in': 'fadeIn 0.3s ease-out forwards',
+        'slide-up': 'slideUp 0.35s ease-out forwards',
+        shake: 'shake 0.4s ease-in-out',
+      },
+      keyframes: {
+        blob: {
+          '0%': { transform: 'translate(0px, 0px) scale(1)' },
+          '33%': { transform: 'translate(30px, -40px) scale(1.08)' },
+          '66%': { transform: 'translate(-20px, 20px) scale(0.95)' },
+          '100%': { transform: 'translate(0px, 0px) scale(1)' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(12px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        shake: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '20%, 60%': { transform: 'translateX(-6px)' },
+          '40%, 80%': { transform: 'translateX(6px)' },
+        },
+      },
+    },
+  },
+  plugins: [],
+};
