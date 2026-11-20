@@ -24,6 +24,7 @@ export const chatApi = {
   }, { signal }),
   getHistory: () => api.get('/api/chat/history'),
   clearHistory: () => api.delete('/api/chat/history'),
+  deleteMessages: (ids: number[]) => api.delete('/api/chat/messages', { data: { ids } }),
 };
 
 export const faqApi = {

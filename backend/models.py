@@ -15,8 +15,7 @@ class MessageRequest(BaseModel):
     @field_validator("content")
     @classmethod
     def validate_content(cls, v: str) -> str:
-        stripped = v.strip()
-        if len(stripped) == 0 or len(v) > 300 or len(v) < 1:
+        if not v.strip() or len(v) > 300:
             raise ValueError("Message must be 1 to 300 characters.")
         return v
 
@@ -29,20 +28,18 @@ class FAQCreate(BaseModel):
     @field_validator("question")
     @classmethod
     def validate_question(cls, v: str) -> str:
-        if len(v) < 10:
-            raise ValueError("Question must be at least 10 characters.")
-        if len(v) > 150:
-            raise ValueError("Question must be 150 characters or fewer.")
-        return v
+        length = len(v.strip())
+        if length < 10 or length > 150:
+            raise ValueError("Question must be 10 to 150 characters.")
+        return v.strip()
 
     @field_validator("answer")
     @classmethod
     def validate_answer(cls, v: str) -> str:
-        if len(v) < 10:
-            raise ValueError("Answer must be at least 10 characters.")
-        if len(v) > 400:
-            raise ValueError("Answer must be 400 characters or fewer.")
-        return v
+        length = len(v.strip())
+        if length < 10 or length > 400:
+            raise ValueError("Answer must be 10 to 400 characters.")
+        return v.strip()
 
 
 class FAQUpdate(BaseModel):
@@ -54,20 +51,20 @@ class FAQUpdate(BaseModel):
     @classmethod
     def validate_question(cls, v: Optional[str]) -> Optional[str]:
         if v is not None:
-            if len(v) < 10:
-                raise ValueError("Question must be at least 10 characters.")
-            if len(v) > 150:
-                raise ValueError("Question must be 150 characters or fewer.")
+            length = len(v.strip())
+            if length < 10 or length > 150:
+                raise ValueError("Question must be 10 to 150 characters.")
+            return v.strip()
         return v
 
     @field_validator("answer")
     @classmethod
     def validate_answer(cls, v: Optional[str]) -> Optional[str]:
         if v is not None:
-            if len(v) < 10:
-                raise ValueError("Answer must be at least 10 characters.")
-            if len(v) > 400:
-                raise ValueError("Answer must be 400 characters or fewer.")
+            length = len(v.strip())
+            if length < 10 or length > 400:
+                raise ValueError("Answer must be 10 to 400 characters.")
+            return v.strip()
         return v
 
 
@@ -78,6 +75,10 @@ class AdminAuth(BaseModel):
 class FeedbackRequest(BaseModel):
     message_id: int
     is_helpful: bool
+
+
+class DeleteMessagesRequest(BaseModel):
+    ids: List[int]
 
 
 # ---- Response Models ----

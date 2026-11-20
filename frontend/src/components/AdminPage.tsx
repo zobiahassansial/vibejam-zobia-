@@ -57,7 +57,7 @@ export function AdminPage() {
   const [newCategory, setNewCategory] = useState<FAQCategory>('Labs');
   const [newQuestion, setNewQuestion] = useState('');
   const [newAnswer, setNewAnswer] = useState('');
-  const [addErrors, setAddErrors] = useState<{ question?: string; answer?: string }>({});
+  const [addErrors, setAddErrors] = useState<{ category?: string; question?: string; answer?: string }>({});
   const [addLoading, setAddLoading] = useState(false);
 
   // Edit FAQ state
@@ -142,20 +142,25 @@ export function AdminPage() {
     }, 500);
   };
 
-  const validateFields = (q: string, a: string) => {
-    const errors: { question?: string; answer?: string } = {};
-    if (q.trim().length < 10) errors.question = 'Question must be at least 10 characters.';
-    else if (q.trim().length > 150) errors.question = 'Question must be 150 characters or fewer.';
-
-    if (a.trim().length < 10) errors.answer = 'Answer must be at least 10 characters.';
-    else if (a.trim().length > 400) errors.answer = 'Answer must be 400 characters or fewer.';
-
+  const validateFields = (q: string, a: string, category?: FAQCategory) => {
+    const errors: { category?: string; question?: string; answer?: string } = {};
+    if (category !== undefined && !category) {
+      errors.category = 'Please choose a category.';
+    }
+    const qLen = q.trim().length;
+    if (qLen < 10 || qLen > 150) {
+      errors.question = 'Question must be 10 to 150 characters.';
+    }
+    const aLen = a.trim().length;
+    if (aLen < 10 || aLen > 400) {
+      errors.answer = 'Answer must be 10 to 400 characters.';
+    }
     return errors;
   };
 
   const handleAddFaq = async (e: React.FormEvent) => {
     e.preventDefault();
-    const errs = validateFields(newQuestion, newAnswer);
+    const errs = validateFields(newQuestion, newAnswer, newCategory);
     setAddErrors(errs);
     if (Object.keys(errs).length > 0) return;
 

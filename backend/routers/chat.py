@@ -3,7 +3,8 @@ from datetime import datetime, timezone
 import json
 
 from database import get_db
-from models import MessageRequest, ChatMessageResponse
+from models import DeleteMessagesRequest, MessageRequest, ChatMessageResponse
+from constants import AI_FAILURE_MESSAGE, VALIDATION_MESSAGE
 from services.ai_service import get_ai_response
 from services.language_service import detect_language
 
@@ -24,7 +25,7 @@ async def send_message(request: MessageRequest):
     """Send a message and get AI response."""
     content = request.content.strip()
     if not content or len(request.content) > 300:
-        raise HTTPException(status_code=422, detail="Message must be 1 to 300 characters.")
+        raise HTTPException(status_code=422, detail=VALIDATION_MESSAGE)
 
     lang = request.detected_language or detect_language(content)
     now_iso = datetime.now(timezone.utc).isoformat()
@@ -39,8 +40,16 @@ async def send_message(request: MessageRequest):
         await db.commit()
         user_msg_id = cursor.lastrowid
 
-        # Get AI response
-        ai_result = await get_ai_response(content, request.detected_language, request.reply_language)
+        try:
+            ai_result = await get_ai_response(content, request.detected_language, request.reply_language)
+        except HTTPException:
+            await db.execute("DELETE FROM messages WHERE id = ?", (user_msg_id,))
+            await db.commit()
+            raise
+        except Exception:
+            await db.execute("DELETE FROM messages WHERE id = ?", (user_msg_id,))
+            await db.commit()
+            raise HTTPException(status_code=503, detail=AI_FAILURE_MESSAGE)
 
         # Save AI response
         faq_ids_json = json.dumps(ai_result.faq_ids) if ai_result.faq_ids else None
@@ -94,6 +103,22 @@ async def get_chat_history():
                 feedback=row["feedback"] if "feedback" in row.keys() else None,
             ))
         return result
+    finally:
+        await db.close()
+
+
+@router.delete("/chat/messages")
+async def delete_chat_messages(payload: DeleteMessagesRequest):
+    """Delete specific persisted messages (stats follow DB contents)."""
+    if not payload.ids:
+        return {"message": "No messages deleted."}
+    db = await get_db()
+    try:
+        placeholders = ",".join("?" for _ in payload.ids)
+        await db.execute(f"DELETE FROM feedback WHERE message_id IN ({placeholders})", payload.ids)
+        await db.execute(f"DELETE FROM messages WHERE id IN ({placeholders})", payload.ids)
+        await db.commit()
+        return {"message": f"Deleted {len(payload.ids)} messages."}
     finally:
         await db.close()
 

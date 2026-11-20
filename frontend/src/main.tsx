@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { ChatProvider } from './context/ChatContext.tsx'
+import { ErrorBoundary } from './components/common/ErrorBoundary.tsx'
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '') || '/'
 if (/^#\/?admin\/?$/i.test(window.location.hash)) {
@@ -13,10 +14,12 @@ if (/^#\/?admin\/?$/i.test(window.location.hash)) {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ChatProvider>
-      <BrowserRouter basename={basePath === '/' ? undefined : basePath}>
-        <App />
-      </BrowserRouter>
-    </ChatProvider>
+    <ErrorBoundary>
+      <ChatProvider>
+        <BrowserRouter basename={basePath === '/' ? undefined : basePath}>
+          <App />
+        </BrowserRouter>
+      </ChatProvider>
+    </ErrorBoundary>
   </StrictMode>,
 )

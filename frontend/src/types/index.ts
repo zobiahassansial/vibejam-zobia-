@@ -7,6 +7,14 @@ export interface FAQ {
   created_at: string;
 }
 
+export interface Conversation {
+  id: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  messages: ChatMessage[];
+}
+
 export interface ChatMessage {
   id: number;
   role: 'user' | 'assistant';

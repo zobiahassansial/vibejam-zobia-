@@ -22,13 +22,13 @@ export interface CompetitionConfig {
 export const APP_CONFIG: CompetitionConfig = {
   appName: 'AskSE',
   entryId: 'ASKSE-2026-001',
-  teamName: 'Software Engineering Help Desk Team',
+  teamName: 'Zobia Hassan',
   teamMembers: [
     'Lead Engineer & AI Architect',
     'Full-Stack Developer & UI/UX',
     'Systems & Evaluation Specialist',
   ],
-  repositoryUrl: 'https://github.com/zobiahassansial/vibejam-zobia-.git',
+  repositoryUrl: 'https://github.com/zobiahassansial/vibejam-ASKSE-2026-001',
   llmApi: 'Ollama Local REST API (http://localhost:11434)',
   model: 'llama3.2:latest',
   aiDevTools: 'Ollama local inference, Prompt Engineering guardrails, FastAPI async engine',

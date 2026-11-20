@@ -23,7 +23,7 @@ STARTER_FAQS = [
     ("FAQ-07", "Transport", "When do the university buses leave?",
      "University buses leave the campus at 01:30 PM and 04:30 PM, Monday to Friday. Bus cards are issued by the Transport Office in Block A.", 1),
     ("FAQ-08", "Help", "Who do I contact for anything else?",
-     "Email helpdesk@se.uol.pk or visit Room 210, 09:00 AM to 04:00 PM, Monday to Friday.", 1),
+     "Email helpdesk@se.example.edu or visit Room 210, 09:00 AM to 04:00 PM, Monday to Friday.", 1),
 ]
 
 
@@ -95,5 +95,11 @@ async def init_db():
                     "INSERT INTO faqs (id, category, question, answer, is_starter, created_at) VALUES (?, ?, ?, ?, ?, ?)",
                     (faq_id, category, question, answer, is_starter, now)
                 )
+
+        for faq_id, category, question, answer, _is_starter in STARTER_FAQS:
+            await db.execute(
+                "UPDATE faqs SET category = ?, question = ?, answer = ? WHERE id = ? AND is_starter = 1",
+                (category, question, answer, faq_id),
+            )
 
         await db.commit()

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import type { ChatMessage } from '../../types';
 import { useToast } from '../common/Toast';
+import { formatChatTime } from '../../utils/formatChatTime';
 import { hasUrduScript } from '../../utils/language';
 
 interface MessageBubbleProps {
@@ -23,12 +24,7 @@ interface MessageBubbleProps {
 
 function formatTime(ts: string): string {
   if (!ts) return '';
-  if (/^\d{1,2}:\d{2}\s*(?:AM|PM)$/i.test(ts.trim())) {
-    return ts.trim();
-  }
-  const d = new Date(ts);
-  if (isNaN(d.getTime())) return ts;
-  return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+  return formatChatTime(ts);
 }
 
 export function MessageBubble({
