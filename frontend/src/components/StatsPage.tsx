@@ -47,6 +47,12 @@ export function StatsPage({ onAskFirstQuestion }: StatsPageProps) {
     fetchStats();
   }, [range]);
 
+  useEffect(() => {
+    const refresh = () => { fetchStats(); };
+    window.addEventListener('askse:stats-refresh', refresh);
+    return () => window.removeEventListener('askse:stats-refresh', refresh);
+  }, [range]);
+
   const handleResetStats = async () => {
     setResetLoading(true);
     try {

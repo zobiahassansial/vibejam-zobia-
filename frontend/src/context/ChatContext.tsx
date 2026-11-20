@@ -138,7 +138,10 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     faqApi.getAll().then((res) => {
       const all: FAQ[] = res.data || [];
-      setSuggestedFaqs(all.filter((faq) => faq.is_starter).slice(0, 5));
+      const sorted = [...all].sort(
+        (a, b) => Number.parseInt(a.id.split('-')[1] ?? '0', 10) - Number.parseInt(b.id.split('-')[1] ?? '0', 10),
+      );
+      setSuggestedFaqs(sorted.slice(0, 8));
     }).catch(() => {});
     return () => abortRef.current?.abort();
   }, []);
@@ -243,6 +246,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         animated: false,
       };
       setMessages((current) => [...current, assistantMessage]);
+      window.dispatchEvent(new Event('askse:stats-refresh'));
       return true;
     } catch (requestError: any) {
       const detail = requestError?.response?.data?.detail;

@@ -196,11 +196,10 @@ export function MessageBubble({
                 <>
                   <button
                     onClick={() => onFeedback(message.id, true)}
-                    disabled={message.feedback != null}
                     className={`p-1 rounded transition-all active:scale-125 ${
                       message.feedback === 'helpful'
                         ? 'text-theme-success font-bold scale-110'
-                        : 'text-theme-faint hover:text-theme-success disabled:opacity-40'
+                        : 'text-theme-faint hover:text-theme-success'
                     }`}
                     title="Helpful"
                     aria-label="Helpful"
@@ -209,11 +208,10 @@ export function MessageBubble({
                   </button>
                   <button
                     onClick={() => onFeedback(message.id, false)}
-                    disabled={message.feedback != null}
                     className={`p-1 rounded transition-all active:scale-125 ${
                       message.feedback === 'not_helpful'
                         ? 'text-theme-danger font-bold scale-110'
-                        : 'text-theme-faint hover:text-theme-danger disabled:opacity-40'
+                        : 'text-theme-faint hover:text-theme-danger'
                     }`}
                     title="Not helpful"
                     aria-label="Not helpful"

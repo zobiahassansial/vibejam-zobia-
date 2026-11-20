@@ -68,8 +68,8 @@ async def get_stats(range_filter: str = Query("all", alias="range")):
             else:
                 not_found += 1
 
-            # Count citations
-            if row["faq_ids"]:
+            # Count citations from validated FAQ answers only
+            if found and m_type == "faq" and row["faq_ids"]:
                 try:
                     c_ids = json.loads(row["faq_ids"])
                     for cid in c_ids:
@@ -263,14 +263,17 @@ async def submit_feedback(payload: FeedbackRequest):
 
         cursor = await db.execute("SELECT id FROM feedback WHERE message_id = ?", (payload.message_id,))
         existing = await cursor.fetchone()
-        if existing:
-            raise HTTPException(status_code=409, detail="Feedback already submitted for this message.")
-
         now = datetime.now(timezone.utc).isoformat()
-        await db.execute(
-            "INSERT INTO feedback (message_id, is_helpful, created_at) VALUES (?, ?, ?)",
-            (payload.message_id, 1 if payload.is_helpful else 0, now)
-        )
+        if existing:
+            await db.execute(
+                "UPDATE feedback SET is_helpful = ?, created_at = ? WHERE message_id = ?",
+                (1 if payload.is_helpful else 0, now, payload.message_id),
+            )
+        else:
+            await db.execute(
+                "INSERT INTO feedback (message_id, is_helpful, created_at) VALUES (?, ?, ?)",
+                (payload.message_id, 1 if payload.is_helpful else 0, now),
+            )
         fb_str = "helpful" if payload.is_helpful else "not_helpful"
         await db.execute("UPDATE messages SET feedback = ? WHERE id = ?", (fb_str, payload.message_id))
         await db.commit()
